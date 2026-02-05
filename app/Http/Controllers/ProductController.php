@@ -15,12 +15,10 @@ class ProductController extends Controller
     {
         $categoryId = $request->category_id;
 
-        if($categoryId)
-        {
-            $products = Product::where('category_id', $categoryId)->paginate(10);;
-        }
-        else
-            $products = Product::with('category')->paginate(10);
+        if ($categoryId) {
+            $products = Product::where('category_id', $categoryId)->inRandomOrder()->paginate(9);
+        } else
+            $products = Product::with('category')->inRandomOrder()->paginate(9);
         $categories = Category::all();
         return view('products.index', compact('products', 'categories'));
     }
@@ -106,10 +104,8 @@ class ProductController extends Controller
     public function search(Request $request)
     {
         $search = $request->search;
-        $products = Product::where('name', 'LIKE', '%'.$search.'%')->get();
+        $products = Product::where('name', 'LIKE', '%' . $search . '%')->get();
         $categories = Category::all();
         return view('products.index', compact('products', 'categories'));
     }
-
-
 }
