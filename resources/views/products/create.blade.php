@@ -1,7 +1,8 @@
+@extends('layouts.app')
 
-<!-- @extends('layouts.app') -->
-<!-- @section('content') -->
+@section('title', 'Add New Product - Verdant')
 
+@section('content')
 <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8 lg:py-12">
 
     <!-- Page Header -->
@@ -23,7 +24,7 @@
     <div class="bg-white rounded-lg shadow-sm border border-neutral-200 overflow-hidden">
 
         <form action="{{ route('products.store') }}" method="POST" class="p-6 lg:p-8 space-y-6">
-             @csrf
+            @csrf
 
             <!-- Product Name -->
             <div>
@@ -35,9 +36,9 @@
                     id="name"
                     name="name"
                     required
+                    value="{{ old('name') }}"
                     class="w-full px-4 py-3 border border-neutral-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent transition-all"
                     placeholder="e.g., Basilic Bio Premium">
-
             </div>
 
             <!-- Category -->
@@ -51,12 +52,12 @@
                     required
                     class="w-full px-4 py-3 border border-neutral-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent transition-all appearance-none bg-white">
                     <option value="">Select a category</option>
-
-                     @foreach($categories as $category)
-                    <option value="{{ $category->id }}">{{ $category->name }}</option>
-                     @endforeach
+                    @foreach($categories as $category)
+                        <option value="{{ $category->id }}" {{ old('category_id') == $category->id ? 'selected' : '' }}>
+                            {{ $category->name }}
+                        </option>
+                    @endforeach
                 </select>
-
             </div>
 
             <!-- Description -->
@@ -70,10 +71,10 @@
                     rows="5"
                     required
                     class="w-full px-4 py-3 border border-neutral-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent transition-all resize-none"
-                    placeholder="Describe your product in detail..."></textarea>
+                    placeholder="Describe your product in detail...">{{ old('description') }}</textarea>
             </div>
 
-            <!-- Price and Stock (Grid) -->
+            <!-- Price and Stock -->
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
 
                 <!-- Price -->
@@ -90,12 +91,10 @@
                             step="0.01"
                             min="0"
                             required
-
+                            value="{{ old('price') }}"
                             class="w-full pl-8 pr-4 py-3 border border-neutral-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent transition-all"
                             placeholder="0.00">
                     </div>
-
-
                 </div>
 
                 <!-- Stock -->
@@ -109,9 +108,9 @@
                         name="stock"
                         min="0"
                         required
+                        value="{{ old('stock') }}"
                         class="w-full px-4 py-3 border border-neutral-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent transition-all"
                         placeholder="0">
-
                 </div>
             </div>
 
@@ -124,10 +123,10 @@
                     type="url"
                     id="image_url"
                     name="image_url"
+                    value="{{ old('image_url') }}"
                     class="w-full px-4 py-3 border border-neutral-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent transition-all"
                     placeholder="https://example.com/image.jpg">
                 <p class="mt-2 text-sm text-neutral-500">Enter a valid image URL or leave blank for default placeholder</p>
-
             </div>
 
             <!-- Divider -->
@@ -175,5 +174,4 @@
     </div>
 
 </div>
-
-<!-- @endsection -->
+@endsection
