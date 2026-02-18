@@ -15,6 +15,10 @@ class IsClient
      */
     public function handle(Request $request, Closure $next): Response
     {
+        if (auth()->user()->role !== 'client')
+        {
+            abort(403);
+        }
         return $next($request);
     }
 }
