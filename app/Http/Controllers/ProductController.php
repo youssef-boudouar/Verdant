@@ -12,22 +12,42 @@ class ProductController extends Controller
      * Display a listing of the resource.
      */
     public function index(Request $request)
-    {
-        $categoryId = $request->category_id;
+{
+    $query = Product::with('category');
 
-        if ($categoryId) {
-            $products = Product::where('category_id', $categoryId)->inRandomOrder()->paginate(9);
-        } else
-            $products = Product::with('category')->inRandomOrder()->paginate(9);
-        $categories = Category::all();
-        return view('products.index', compact('products', 'categories'));
+    if ($request->category_id) {
+        $query->where('category_id', $request->category_id);
     }
+
+    switch ($request->sort) {
+        case 'price_low':
+            $query->orderBy('price', 'asc');
+            break;
+        case 'price_high':
+            $query->orderBy('price', 'desc');
+            break;
+        case 'name':
+            $query->orderBy('name', 'asc');
+            break;
+        case 'newest':
+            $query->orderBy('created_at', 'desc');
+            break;
+        default:
+            $query->inRandomOrder();
+    }
+
+    $products = $query->paginate(9);
+    $categories = Category::all();
+
+    return view('products.index', compact('products', 'categories'));
+}
 
     /**
      * Show the form for creating a new resource.
      */
     public function create()
     {
+        $this->authorize('create', Product::class);
         $categories = Category::all();
         return view('products.create', compact('categories'));
     }
@@ -86,6 +106,7 @@ class ProductController extends Controller
             ]
         );
         $product = Product::findOrFail($id);
+        $this->authorize('update', $product);
         $product->update($validated);
         return redirect()->route('home');
     }
@@ -96,6 +117,7 @@ class ProductController extends Controller
     public function destroy($id)
     {
         $product = Product::findOrFail($id);
+        $this->authorize('delete', $product);
         $product->delete();
 
         return redirect()->route('home');
