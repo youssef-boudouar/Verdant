@@ -34,11 +34,33 @@
                     </a>
                 @endforeach
             </div>
-            <div class="text-sm text-neutral-500">
-                {{ $products->total() }} products
-            </div>
-        </div>
+            <!-- Add this in the filter bar, next to product count -->
+<div class="flex items-center gap-4">
+    <form action="{{ route('home') }}" method="GET" class="flex items-center gap-2">
+        @if(request('category_id'))
+            <input type="hidden" name="category_id" value="{{ request('category_id') }}">
+        @endif
+
+        <label class="text-sm text-neutral-600">Sort by:</label>
+        <select name="sort"
+                onchange="this.form.submit()"
+                class="px-3 py-1 rounded-lg border border-neutral-300 text-sm">
+            <option value="">Random</option>
+            <option value="price_low" {{ request('sort') == 'price_low' ? 'selected' : '' }}>Price: Low to High</option>
+            <option value="price_high" {{ request('sort') == 'price_high' ? 'selected' : '' }}>Price: High to Low</option>
+            <option value="name" {{ request('sort') == 'name' ? 'selected' : '' }}>Name: A-Z</option>
+            <option value="newest" {{ request('sort') == 'newest' ? 'selected' : '' }}>Newest First</option>
+        </select>
+    </form>
+
+    <div class="text-sm text-neutral-500">
+        {{ $products->total() }} products
     </div>
+</div>
+        </div>
+
+    </div>
+
 </section>
 
 <!-- Admin Actions Bar -->
