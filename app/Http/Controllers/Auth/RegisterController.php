@@ -20,10 +20,13 @@ class RegisterController extends Controller
             'name' => 'required|string|max:30',
             'email' =>  'required|email|unique:users',
             'password' => 'required|string|min:8|confirmed',
-            'role' => 'client'
         ]);
 
+
         $user = User::create($validated);
+
+        $user->assignRole('client');
+        
         Auth::login($user);
         return redirect()->route('home');
     }
