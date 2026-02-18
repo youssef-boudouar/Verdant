@@ -21,56 +21,39 @@
 
                 <!-- Right Navigation -->
                 <div class="flex items-center space-x-6">
-                    <a href="{{ route('home') }}" class="text-neutral-600 hover:text-emerald-600 transition-colors">
-                        Catalog
-                    </a>
+    <a href="{{ route('home') }}" class="text-neutral-600 hover:text-emerald-600 transition-colors">Catalog</a>
 
-                    @guest
-                        <!-- Not Logged In -->
-                        <a href="{{ route('login') }}" class="text-neutral-600 hover:text-emerald-600 transition-colors">
-                            Login
-                        </a>
-                        <a href="{{ route('register') }}" class="px-4 py-2 bg-emerald-600 text-white rounded-lg hover:bg-emerald-700 transition-colors text-sm">
-                            Register
-                        </a>
-                    @else
-                        <!-- Logged In -->
+    @guest
+    <a href="{{ route('login') }}" class="text-neutral-600 hover:text-emerald-600 transition-colors">Login</a>
+    <a href="{{ route('register') }}" class="px-4 py-2 bg-emerald-600 text-white rounded-lg hover:bg-emerald-700 transition-colors text-sm">Register</a>
+@else
+    @role('admin')
+        <a href="{{ route('admin.users.index') }}" class="text-neutral-600 hover:text-emerald-600 transition-colors">
+            Users
+        </a>
+        <a href="{{ route('roles.index') }}" class="text-neutral-600 hover:text-emerald-600 transition-colors">
+            Roles
+        </a>
+        <span class="px-3 py-1 bg-emerald-100 text-emerald-800 text-xs font-medium rounded-full">
+            Admin
+        </span>
+    @endrole
 
-                        @if(auth()->user()->role === 'admin')
-                            <span class="px-3 py-1 bg-emerald-100 text-emerald-800 text-xs font-medium rounded-full">
-                                Admin
-                            </span>
-                        @else
-                            <!-- Favorites Link for Clients -->
-                            <a href="{{ route('favorites.index') }}" class="flex items-center text-neutral-600 hover:text-emerald-600 transition-colors">
-                                <svg class="w-5 h-5 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/>
-                                </svg>
-                                Favorites
-                                @if(auth()->user()->favorites->count() > 0)
-                                    <span class="ml-1 px-2 py-0.5 bg-emerald-100 text-emerald-800 text-xs rounded-full">
-                                        {{ auth()->user()->favorites->count() }}
-                                    </span>
-                                @endif
-                            </a>
-                        @endif
+    @role('client')
+        <a href="{{ route('favorites.index') }}" class="text-neutral-600 hover:text-emerald-600 transition-colors">
+            Favorites ({{ auth()->user()->favorites->count() }})
+        </a>
+    @endrole
 
-                        <!-- User Name -->
-                        <span class="text-sm text-neutral-600 hidden md:block">
-                            Hello, <span class="font-medium text-neutral-900">{{ auth()->user()->name }}</span>
-                        </span>
+    <span class="text-neutral-600">Hello, {{ auth()->user()->name }}</span>
 
-                        <!-- Logout Button -->
-                        <form action="{{ route('logout') }}" method="POST" class="inline">
-                            @csrf
-                            <button type="submit" class="flex items-center text-neutral-600 hover:text-red-600 transition-colors text-sm">
-                                <svg class="w-5 h-5 md:mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/>
-                                </svg>
-                                <span class="hidden md:inline">Logout</span>
-                            </button>
-                        </form>
-                    @endguest
+    <form action="{{ route('logout') }}" method="POST">
+        @csrf
+        <button type="submit" class="text-neutral-600 hover:text-emerald-600 transition-colors">
+            Logout
+        </button>
+    </form>
+@endguest
                 </div>
             </div>
         </div>
