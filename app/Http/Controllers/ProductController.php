@@ -126,7 +126,9 @@ class ProductController extends Controller
     public function search(Request $request)
     {
         $search = $request->search;
-        $products = Product::where('name', 'LIKE', '%' . $search . '%')->get();
+        $products = Product::where('name', 'LIKE', '%' . $search . '%')
+                           ->paginate(9)
+                           ->appends(['search' => $search]);
         $categories = Category::all();
         return view('products.index', compact('products', 'categories'));
     }
