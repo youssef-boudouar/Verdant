@@ -9,19 +9,15 @@ class DatabaseSeeder extends Seeder
 {
     public function run(): void
     {
-        User::create([
-            'name'     => 'Admin',
-            'email'    => 'admin@verdant.com',
-            'password' => 'password',
-            'role'     => 'admin',
-        ]);
+        User::firstOrCreate(
+            ['email' => 'admin@verdant.com'],
+            ['name' => 'Admin', 'password' => 'password', 'role' => 'admin']
+        );
 
-        User::create([
-            'name'     => 'Client',
-            'email'    => 'client@verdant.com',
-            'password' => 'password',
-            'role'     => 'client',
-        ]);
+        User::firstOrCreate(
+            ['email' => 'client@verdant.com'],
+            ['name' => 'Client', 'password' => 'password', 'role' => 'client']
+        );
 
         $this->call([
             CategorySeeder::class,
