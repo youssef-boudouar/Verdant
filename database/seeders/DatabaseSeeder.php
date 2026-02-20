@@ -3,25 +3,24 @@
 namespace Database\Seeders;
 
 use App\Models\User;
-use App\Models\Category;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
 {
-    use WithoutModelEvents;
-
-    /**
-     * Seed the application's database.
-     */
     public function run(): void
     {
-        // User::factory(10)->create();
+        User::create([
+            'name'     => 'Admin',
+            'email'    => 'admin@verdant.com',
+            'password' => 'password',
+            'role'     => 'admin',
+        ]);
 
-        User::factory()->create([
-            'name' => 'Youssef Boudouar',
-            'email' => 'youssefboudouar771@gmail.com',
-            'role' => 'admin'
+        User::create([
+            'name'     => 'Client',
+            'email'    => 'client@verdant.com',
+            'password' => 'password',
+            'role'     => 'client',
         ]);
 
         $this->call([
@@ -30,4 +29,3 @@ class DatabaseSeeder extends Seeder
         ]);
     }
 }
-
