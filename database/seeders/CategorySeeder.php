@@ -14,19 +14,19 @@ class CategorySeeder extends Seeder
      */
     public function run(): void
     {
-        Category::create([
-            'name' => 'Plantes',
-            'description' => 'dsbjhbchxnxijcdnokwodkwpe',
-        ]);
+        Category::firstOrCreate(
+            ['name' => 'Plantes'],
+            ['description' => 'dsbjhbchxnxijcdnokwodkwpe']
+        );
 
-        Category::create([
-            'name' => 'Graines',
-            'description' => 'dsiudsffsdfcsdcsdccd'
-        ]);
+        Category::firstOrCreate(
+            ['name' => 'Graines'],
+            ['description' => 'dsiudsffsdfcsdcsdccd']
+        );
 
-        Category::create([
-            'name' => 'Outils',
-            'description' => 'dsddddddddcxcxvxcvflpokdvpo',
-        ]);
+        Category::firstOrCreate(
+            ['name' => 'Outils'],
+            ['description' => 'dsddddddddcxcxvxcvflpokdvpo']
+        );
     }
 }

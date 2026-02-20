@@ -310,9 +310,12 @@ class ProductsSeeder extends Seeder
             ],
         ];
 
-        // 3. Loop through and create each product
+        // 3. Loop through and insert only if product doesn't exist yet
         foreach ($products as $productData) {
-            Product::create($productData);
+            Product::firstOrCreate(
+                ['name' => $productData['name']],
+                array_diff_key($productData, ['name' => ''])
+            );
         }
     }
 }
